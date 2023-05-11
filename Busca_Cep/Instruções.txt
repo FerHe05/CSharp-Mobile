@@ -1,2 +1,2 @@
 Busca Cep em C#
-Instalar a dependênca nuNuget: "Newtonsoft.Json".
+Instalar a dependência nuNuget: "Newtonsoft.Json".
