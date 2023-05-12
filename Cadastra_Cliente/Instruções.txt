@@ -1,0 +1,4 @@
+Projeto de cadastrar dados utilizando banco de dados externo.
+
+Instalar a dependência: MySqlConnetor.
+Hospedagem grátis do banco de dados: freedb.tech

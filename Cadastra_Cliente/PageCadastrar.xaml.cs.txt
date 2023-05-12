@@ -1,0 +1,31 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
+using Cadastrar_Clientes.Controller;
+using Xamarin.Essentials;
+
+namespace Cadastrar_Clientes
+{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class PageCadastrar : ContentPage
+    {
+        public PageCadastrar()
+        {
+            InitializeComponent();
+        }
+
+        private void btnCadastrar_Clicked(object sender, EventArgs e)
+        {
+            MySQLCon.InserirPessoa(txtNome.Text, txtCpf.Text, txtEmail.Text, txtTelefone.Text);
+            DisplayAlert("Cadastro", "Pessoa Cadastrada com sucesso!", "OK");
+            Navigation.PushAsync(new PageListar());
+        }
+
+       
+    }
+}

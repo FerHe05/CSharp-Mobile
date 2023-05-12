@@ -1,0 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Cadastrar_Clientes.Models
+{
+    public class Pessoa
+    {
+        public int id { get; set; }
+        public string nome { get; set; }
+        public int cpf { get; set; }
+        public string email { get; set; }
+        public string telefone { get; set; }
+
+    }
+}

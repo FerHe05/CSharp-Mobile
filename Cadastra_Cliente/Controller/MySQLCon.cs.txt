@@ -1,0 +1,106 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+using MySqlConnector;
+using Cadastrar_Clientes.Models;
+
+namespace Cadastrar_Clientes.Controller
+{
+    public class MySQLCon
+    {
+        static string conn = @"server=sql.freedb.tech;port=3306;database=freedb_aula_1;user id=freedb_trabalho;password=T7xmqTHCjWv$k7k;charset=utf8";
+
+        public static List<Pessoa> ListarPessoas()
+        {
+            List<Pessoa> listapessoas = new List<Pessoa>();
+            string sql = "SELECT * FROM pessoa";
+            using (MySqlConnection con = new MySqlConnection(conn))
+            {
+                con.Open();
+                using (MySqlCommand cmd = new MySqlCommand(sql, con))
+                {
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Pessoa pessoa = new Pessoa()
+                            {
+                                id = reader.GetInt32(0),
+                                nome = reader.GetString(1),
+                                cpf = reader.GetInt32(2),
+                                email = reader.GetString(3),
+                                telefone = reader.GetString(4),
+                            };
+                            listapessoas.Add(pessoa);
+                        }
+                    }
+                }
+                con.Close();
+                return listapessoas;
+            }
+        }
+
+        public static void InserirPessoa(string nome, string cpf, string email, string telefone)
+        {
+            string sql = "INSERT INTO pessoa(nome, cpf, email, telefone) VALUES (@nome, @cpf, @email, @telefone)";
+            using (MySqlConnection con = new MySqlConnection(conn))
+            {
+                con.Open();
+                using (MySqlCommand cmd = new MySqlCommand(sql, con))
+                {
+                    cmd.Parameters.Add("@nome", MySqlDbType.VarChar).Value = nome;
+                    cmd.Parameters.Add("@cpf", MySqlDbType.Int32).Value = cpf;
+                    cmd.Parameters.Add("@email", MySqlDbType.VarChar).Value = email;
+                    cmd.Parameters.Add("@telefone", MySqlDbType.VarChar).Value = telefone;
+                    cmd.CommandType = CommandType.Text;
+                    cmd.ExecuteNonQuery();
+                }
+                con.Close();
+            }
+        }
+
+        public static void AtualizarPessoa(Pessoa pessoa)
+        {
+            string sql = "UPDATE pessoa SET nome=@nome, cpf=@cpf, email=@email, telefone=@telefone WHERE id=@id";
+            try
+            {
+                using (MySqlConnection con = new MySqlConnection(conn))
+                {
+                    con.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(sql, con))
+                    {
+                        cmd.Parameters.Add("@id", MySqlDbType.Int32).Value = pessoa.id;
+                        cmd.Parameters.Add("@nome", MySqlDbType.VarChar).Value = pessoa.nome;
+                        cmd.Parameters.Add("@cpf", MySqlDbType.Int32).Value = pessoa.cpf;
+                        cmd.Parameters.Add("@email", MySqlDbType.VarChar).Value = pessoa.email;
+                        cmd.Parameters.Add("@telefone", MySqlDbType.VarChar).Value = pessoa.telefone;
+                        cmd.CommandType = CommandType.Text;
+                        cmd.ExecuteNonQuery();
+                    }
+                    con.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        public static void ExcluirPessoa(Pessoa pessoa)
+        {
+            string sql = "DELETE FROM pessoa WHERE id=@id";
+            using (MySqlConnection con = new MySqlConnection(conn))
+            {
+                con.Open();
+                using (MySqlCommand cmd = new MySqlCommand(sql, con))
+                {
+                    cmd.Parameters.Add("@id", MySqlDbType.Int32).Value = pessoa.id;
+                    cmd.CommandType = CommandType.Text;
+                    cmd.ExecuteNonQuery();
+                }
+                con.Close();
+            }
+        }
+    }
+}
